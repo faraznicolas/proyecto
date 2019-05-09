@@ -1,6 +1,10 @@
 <?php
 session_start();
 $usuario_id = $_SESSION['usuario_id'];
+if (empty($usuario_id)){
+  header('Location:inicio.php');
+  exit;
+}
 $mysqli = new mysqli('localhost', 'nfaraz', '1424/4', 'computacion2');
 $i=0;
 $array_pedido = array();

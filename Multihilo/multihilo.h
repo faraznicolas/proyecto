@@ -20,5 +20,7 @@
 void *  hilo(void *);
 int enviar(char*);
 int responder(char*);
+int verificar(char*);
+int responder_error();
 
 #endif
