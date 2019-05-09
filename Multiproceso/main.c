@@ -1,11 +1,14 @@
 #include "multiproceso.h"
 
+#define sms(a,b)(a == 1) ? b : (void)0
+
 #define BACKLONG 2000
+
 
 int main (int argc , char** argv){
 
 	int port=5000;
-	int val=1;
+	int val=1,a;
 	int sd, bd,ad,pid,ard,opcion,config;
 	char buff[2048];
 	char buffer[2048];
@@ -37,8 +40,8 @@ int main (int argc , char** argv){
 	/*semaforo= mmap(NULL, sizeof (sem_t),PROT_READ | PROT_WRITE, MAP_SHARED| MAP_ANONYMOUS, -1,0);
 	sem_init(semaforo,1,0);*/
 
-	while(1){
-		opcion = getopt(argc,argv,"f:");
+	while (1){
+		opcion = getopt (argc, argv, "f:v");
 		switch(opcion){
 			case 'f':
 				config = open(argv[2],O_RDWR,0644);
@@ -51,16 +54,30 @@ int main (int argc , char** argv){
 				user = strtok(NULL,"; ");
 				password = strtok(NULL,"; ");
 				database = strtok(NULL,"; ");
-			break;	
-			default:
+				a=1;
+			break;
+			case 'v':
+				a = 1;
 				servidor = "localhost";
-				user = "nfaraz";
-				password = "1424/4";
-				database = "computacion2";
+                                user = "nfaraz";
+                                password = "1424/4";
+                                database = "computacion2";
+	
+			break;
+			default:
+				a = 0;
+				servidor = "localhost";
+                                user = "nfaraz";
+                                password = "1424/4";
+                                database = "computacion2";
 			break;
 		}
-	break;
+		break;
 	}
+
+	sms(a,printf("server:%s \n",servidor));
+	sms(a,printf("usuario:%s \n",user));
+	sms(a,printf("database:%s \n",database));
 
 	sd=socket(AF_INET,SOCK_STREAM,0);
 	if (sd < 0){
@@ -89,10 +106,10 @@ int main (int argc , char** argv){
 		}	
 		pid = fork ();
 		if ( pid == 0 ) {
-			printf("Conectado:\n");
-
+			sms(a,printf("Conectado:\n"));
+			sms(a,printf("Padre %d\n",getpid()));
 			numbytes = read(ad, &buffer, sizeof(buffer));
-   			//write(1, buffer, numbytes);
+			sms(a,printf("%s\n",buffer));
 			usuario_id = strtok(buffer,"--> ");
 			strcat(name_archivo,usuario_id);
 			strcat(name_archivo,".txt");
@@ -100,27 +117,24 @@ int main (int argc , char** argv){
 			cantidad = contar(buffer,numbytes) + 1;
 			pipe(tuberia_padre);
 			pipe(tuberia_hijos);
-			
 			token = strtok(NULL," ");
 			token = strtok(NULL,";");
 			for(int i = 0; i<cantidad; i++){
 				switch(fork()){	
 					case 0:
 						if(i != cantidad-1){// hijos procesadores
-						//	printf("hijo_procesador\n");
 							close(tuberia_hijos[0]);
 							strcpy(copy,token);
 							cod_articulo = codigo_articulo(token);
 							cant_articulo = cantidad_articulo(copy);
-							//printf("codigo: %s -cantidad:  %s\n",cod_articulo,cant_articulo);
+							sms(a,printf("Hijo %d --> codigo: %s cantidad:  %s\n",getpid(),cod_articulo,cant_articulo));
 							resultado = procesamiento(cod_articulo,cant_articulo,servidor,user,password,database);
 							write(tuberia_hijos[1],resultado,strlen(resultado));
 							close(tuberia_hijos[1]);
-							//printf("hijo procesador %d ->desbloqueo padre\n",getpid());
 							//sem_post(semaforo);
 							return 0;
 						}else{// hijo monitor
-							//printf("inicio->hijo_monitor\n");
+							sms(a,printf("Hijo monitor %d \n",getpid()));
 							close(tuberia_padre[0]);
 							close(tuberia_hijos[1]);
 							remove(name_archivo);
@@ -132,16 +146,14 @@ int main (int argc , char** argv){
                                         		}
 
 							while((leido = read(tuberia_hijos[0],buff,sizeof buff))>0){
-								write(ard,buff,leido);	
+								write(ard,buff,leido);
+								sms(a,write(1,buff,leido));	
 							}
-
-								archivo_id = insertar(usuario_id,servidor,user,password,database);
-								write(tuberia_padre[1],archivo_id,sizeof archivo_id);
-							/*}else{
-								 write(tuberia_padre[1],"Error\n",6);
-							}*/
 							
-							//printf(" hijo monitor %d ->desbloqueo padre\n",getpid());
+							archivo_id = insertar(usuario_id,servidor,user,password,database);
+							write(tuberia_padre[1],archivo_id,sizeof archivo_id);
+							sms(a,printf("Archivo_id --> %s\n",archivo_id));
+								
 							//sem_post(semaforo);
 							close(ard);
                                                         close(tuberia_hijos[0]);
@@ -151,11 +163,9 @@ int main (int argc , char** argv){
 					break;
 			
 				}
-				//printf("bloqueo padre %d \n",getpid());
                               	//sem_wait(semaforo);
 				token = strtok(NULL,";");
 			}
-			//printf("fin->padre\n");
 			close(tuberia_padre[1]);
 			close(tuberia_hijos[1]);
 			close(tuberia_hijos[0]);
@@ -164,9 +174,9 @@ int main (int argc , char** argv){
 
 			enviado = enviar(mensaje);
 			if(enviado > 0){
-				printf("enviado\n");
+				sms(a,printf("enviado\n"));
 			}else{
-				printf("error");
+				sms(a,printf("error\n"));
 			}
 			return 0;		
 		}

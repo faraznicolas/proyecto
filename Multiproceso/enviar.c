@@ -31,8 +31,7 @@ int enviar (char * mensaje){
        		printf("connect() error\n");
       		return -1;
    	}
-
-	printf("%s\n",buffer);  
+  
 	numbytes = send(fd, buffer,strlen(buffer), 0);
    	if ( numbytes < 0 ){  
       		printf("Error en send() \n");
