@@ -21,6 +21,12 @@ void *hilo (void* sd_conn){
 	leido = read(sdc,buffer,sizeof buffer);
 	write (1,buffer,leido);
 	write (1,"\n",1);
+	if (!strcmp(buffer," ")){
+		responder_error();
+                close(sdc);
+                pthread_mutex_unlock(&sem);
+                pthread_exit(NULL);
+	}
 	
 	control = strtok(buffer,":/ ");	
 
