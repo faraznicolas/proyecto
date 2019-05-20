@@ -34,7 +34,7 @@ if(empty($articulos)){
   $archivo_id = stream_socket_recvfrom($socket2, 1500);
   //echo "<br>recibi----> " . $archivo_id . "\n";
   fclose($socket2);
-  if (!empty($archivo_id)){
+  if (!empty($archivo_id) && $archivo_id !='Error'){
     header('Location:resultado.php?archivo_id='.$archivo_id);
   }
 }

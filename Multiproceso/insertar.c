@@ -25,6 +25,7 @@ char * insertar (char * usuario_id, char * server, char * user, char * password,
 	fd = open(name_archivo,O_RDWR,NULL);
 	if(fd == -1){
 		write(1,"Error\n",7);
+		return 0;
 	}
 	read(fd,buffer,sizeof buffer);
 
@@ -60,6 +61,7 @@ char * insertar (char * usuario_id, char * server, char * user, char * password,
 	while ((row = mysql_fetch_row(res)) != NULL)	
 	strcat(archivo, row[0]);
 	archivo_id = strtok(archivo,"-");
+//	printf("%s\n",archivo_id);
 
 	close(fd);
 	mysql_close(conn);

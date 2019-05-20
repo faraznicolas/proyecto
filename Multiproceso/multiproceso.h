@@ -31,5 +31,6 @@ char * cantidad_articulo(char*);
 char * procesamiento(char*, char*, char*, char*, char*, char*);
 char *  insertar (char*, char*, char*, char*, char*);
 int  enviar(char*);
+int master(int, int, char*,char*, char*, char*, char*);
 
 #endif      

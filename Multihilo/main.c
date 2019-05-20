@@ -43,7 +43,8 @@ int main (int argc, char ** argv){
 		if ((pthread_create(&tid1,&atributo,&hilo,(void *)sdc))!=0){
 			perror("pthread");
 			return -1;
-		}		
+		}
+		//pthread_join(tid1, NULL);		
 	}	
 	return 0;
 }
