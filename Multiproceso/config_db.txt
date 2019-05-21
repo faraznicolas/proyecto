@@ -1,1 +1,1 @@
-localhost; nfaraz; 1424/4; computacion2;
+192.168.15.203; root; root; computacion2;

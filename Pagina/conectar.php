@@ -5,7 +5,7 @@ if (empty($usuario_id)){
   header('Location:inicio.php');
   exit;
 }
-$mysqli = new mysqli('localhost', 'nfaraz', '1424/4', 'computacion2');
+$mysqli = new mysqli('192.168.15.203', 'root', 'root', 'computacion2');
 $i=0;
 $array_pedido = array();
 foreach ($_POST['articulos'] as $key => $codigo ) {

@@ -47,7 +47,7 @@ body {
     session_start();
     $archivo_id = $_GET['archivo_id'];
     $usuario_id = $_SESSION['usuario_id'];
-    $mysqli = new mysqli('localhost', 'nfaraz', '1424/4', 'computacion2');
+  $mysqli = new mysqli('192.168.15.203', 'root', 'root', 'computacion2');
 
     $query = $mysqli -> query ("SELECT * FROM archivo_pedido
       WHERE id = '$archivo_id' AND usuario_id = '$usuario_id'");

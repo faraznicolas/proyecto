@@ -1,6 +1,6 @@
 <?php
 session_start();
-$mysqli = new mysqli('localhost', 'nfaraz', '1424/4', 'computacion2');
+$mysqli = new mysqli('192.168.15.203', 'root', 'root', 'computacion2');
 
 $usuario = $_POST['usuario'];
 $pass = $_POST['pass'];

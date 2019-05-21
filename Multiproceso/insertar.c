@@ -16,7 +16,10 @@ char * insertar (char * usuario_id, char * server, char * user, char * password,
 	char *password = "1424/4";
 	char *database = "computacion2";*/
 	char blob[2048];
-	char query[1024] = "INSERT INTO `archivo_pedido` (`id`, `usuario_id`, `contenido`) VALUES ('NULL','";
+	char id2[200] = "SELECT MAX(id)+1 FROM archivo_pedido;";
+	char query[1000] = "INSERT INTO `archivo_pedido` (`id`, `usuario_id`, `contenido`) VALUES ('";
+	char query2[1000] = "','";
+	//char query[1024] = "INSERT INTO `archivo_pedido` (`id`, `usuario_id`, `contenido`) VALUES ('NULL','";
 	char select[1024] = "SELECT MAX(id) FROM archivo_pedido WHERE usuario_id = ";
 
 	strcat(name_archivo,usuario_id);
@@ -36,6 +39,17 @@ char * insertar (char * usuario_id, char * server, char * user, char * password,
 		write(1,"Error",5);
 		return 0;
 	}
+	
+	if (mysql_query(conn,id2)) {
+                fprintf(stderr, "%s\n", mysql_error(conn));
+                return 0;
+        }
+        res = mysql_use_result(conn);
+        while ((row = mysql_fetch_row(res)) != NULL)
+        strcat(query,row[0]);
+        strcat(query,query2);
+
+
 
 	mysql_real_escape_string(conn, blob, buffer, strlen(buffer));
 

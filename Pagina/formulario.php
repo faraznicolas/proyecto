@@ -72,7 +72,7 @@ input:focus { box-shadow: inset 0 -5px 45px rgba(100,100,100,0.4), 0 1px 1px rgb
 </head>
 <body>
   <?php
-    $mysqli = new mysqli('localhost', 'nfaraz', '1424/4', 'computacion2');
+    $mysqli = new mysqli('192.168.15.203', 'root', 'root', 'computacion2');
     $consulta = $mysqli -> query ("SELECT COUNT(1) AS cantidad FROM producto");
     $cantidad = mysqli_fetch_array($consulta)
   ?>
